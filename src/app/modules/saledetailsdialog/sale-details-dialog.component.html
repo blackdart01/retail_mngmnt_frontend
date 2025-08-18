@@ -1,0 +1,50 @@
+<h2 mat-dialog-title>Invoice: {{ sale.invoiceNumber }}</h2>
+
+<mat-dialog-content>
+    <table mat-table [dataSource]="sale.items" class="mat-elevation-z1">
+        <!-- Product -->
+        <ng-container matColumnDef="product">
+            <mat-header-cell *matHeaderCellDef> Product </mat-header-cell>
+            <mat-cell *matCellDef="let item">
+                {{ item.product.name }} ({{ item.product.sku }})
+            </mat-cell>
+        </ng-container>
+
+        <!-- Category -->
+        <ng-container matColumnDef="category">
+            <mat-header-cell *matHeaderCellDef> Category </mat-header-cell>
+            <mat-cell *matCellDef="let item">
+                {{ item.product.category.name }}
+            </mat-cell>
+        </ng-container>
+
+        <!-- Price -->
+        <ng-container matColumnDef="price">
+            <mat-header-cell *matHeaderCellDef> Price </mat-header-cell>
+            <mat-cell *matCellDef="let item">
+                {{ (item.unitPrice ? item.unitPrice : item.product.batches[0].sellingPrice) | currency:'INR':'symbol' }}
+            </mat-cell>
+        </ng-container>
+
+        <!-- Quantity -->
+        <ng-container matColumnDef="quantity">
+            <mat-header-cell *matHeaderCellDef> Qty </mat-header-cell>
+            <mat-cell *matCellDef="let item"> {{ item.quantity }} </mat-cell>
+        </ng-container>
+
+        <!-- Subtotal -->
+        <ng-container matColumnDef="subtotal">
+            <mat-header-cell *matHeaderCellDef> Subtotal </mat-header-cell>
+            <mat-cell *matCellDef="let item">
+                {{ item.totalProductCost | currency:'INR':'symbol' }}
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="itemColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: itemColumns"></mat-row>
+    </table>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

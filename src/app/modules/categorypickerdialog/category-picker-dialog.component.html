@@ -1,0 +1,57 @@
+<!-- <h2 mat-dialog-title>Select Category</h2>
+<mat-dialog-content>
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Search Category</mat-label>
+        <input matInput (input)="filterCategories($event)" placeholder="Type to search...">
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <mat-selection-list>
+        <mat-list-option *ngFor="let cat of filteredCategories" (click)="selectCategory(cat)">
+            {{ cat.name }}
+        </mat-list-option>
+    </mat-selection-list>
+</mat-dialog-content>
+<mat-dialog-actions MatDialogActions.align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions> -->
+
+<h2 mat-dialog-title>Select Category</h2>
+<div mat-dialog-content>
+    <!-- Search -->
+    <mat-form-field class="w-full">
+        <mat-label>Search Category</mat-label>
+        <input matInput (input)="filterCategories($event)" placeholder="Type to search..." />
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <!-- Category List -->
+    <mat-nav-list>
+        <mat-list-item *ngFor="let cat of filteredCategories" (click)="selectCategory(cat)" class="cursor-pointer">
+            {{ cat.name }}
+        </mat-list-item>
+    </mat-nav-list>
+
+    <!-- Toggle Create Form -->
+    <div class="mt-3">
+        <button mat-stroked-button color="primary" (click)="toggleCreateCategory()">
+            {{ creatingCategory ? 'Cancel' : 'Create New Category' }}
+        </button>
+    </div>
+
+    <!-- Create Category Form -->
+    <div *ngIf="creatingCategory" class="mt-3">
+        <mat-form-field class="w-full">
+            <mat-label>New Category Name</mat-label>
+            <input matInput [(ngModel)]="newCategoryName" placeholder="Enter category name" />
+        </mat-form-field>
+
+        <button mat-raised-button color="accent" (click)="createCategory()" [disabled]="loading">
+            {{ loading ? 'Creating...' : 'Save Category' }}
+        </button>
+    </div>
+</div>
+
+<div mat-dialog-actions MatDialogActions.align="end">
+    <button mat-button mat-dialog-close>Close</button>
+</div>

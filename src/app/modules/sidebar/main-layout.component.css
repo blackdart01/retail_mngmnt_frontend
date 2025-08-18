@@ -1,0 +1,20 @@
+.layout-container {
+    height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+}
+
+.sidebar-header {
+    font-weight: bold;
+    font-size: 18px;
+    justify-content: center;
+}
+
+mat-icon {
+    margin-right: 8px;
+}
+
+.content {
+    padding: 20px; }

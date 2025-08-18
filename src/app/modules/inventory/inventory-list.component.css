@@ -1,0 +1,45 @@
+.inventory-container {
+    padding: 10px;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.search-field {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 15px;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.mobile-view {
+    display: none;
+}
+
+.product-card {
+    margin-bottom: 15px;
+}
+
+.batch-card {
+    background: #f8f9fa;
+    padding: 8px;
+    border-radius: 5px;
+    margin-top: 8px;
+}
+
+@media (max-width: 768px) {
+    .desktop-view {
+        display: none;
+    }
+
+    .mobile-view {
+        display: block;
+    }
+}

@@ -1,0 +1,38 @@
+<div class="invoice-container">
+    <h2>Invoice #{{ data.invoiceNumber }}</h2>
+    <p>Date: {{ data.date | date: 'short' }}</p>
+    <p>Customer: {{ data.username }}</p>
+
+    <hr>
+
+    <table class="invoice-table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Batch</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of data.items">
+                <td>{{ item.productName }}</td>
+                <td>{{ item.batchNumber }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.price | currency:'INR':'symbol' }}</td>
+                <td>{{ item.quantity * item.price | currency:'INR':'symbol' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <h3>Total: {{ data.totalPrice | currency:'INR':'symbol' }}</h3>
+
+    <div class="button-row">
+        <button mat-raised-button color="primary" (click)="recordAnotherSale()">Record Another Sale</button>
+        <button mat-raised-button color="warn" (click)="close()">Close</button>
+    </div>
+</div>
+  

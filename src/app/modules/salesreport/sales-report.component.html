@@ -1,0 +1,103 @@
+<div class="report-container">
+    <!-- Date range filter -->
+    <div class="filters">
+        <mat-form-field appearance="outline">
+            <mat-label>Start Date</mat-label>
+            <input matInput [matDatepicker]="picker1" [(ngModel)]="startDate">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>End Date</mat-label>
+            <input matInput [matDatepicker]="picker2" [(ngModel)]="endDate">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="fetchReport()">Load Report</button>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-cards">
+        <mat-card class="kpi">
+            <h3>Total Sales</h3>
+            <p>{{ report?.totalSale | currency:'INR':'symbol' }}</p>
+        </mat-card>
+        <mat-card class="kpi">
+            <h3>Total Expenditure</h3>
+            <p>{{ report?.totalExpenditure | currency:'INR':'symbol' }}</p>
+        </mat-card>
+        <mat-card class="kpi">
+            <h3>Total Profit</h3>
+            <p>{{ report?.totalProfit | currency:'INR':'symbol' }}</p>
+        </mat-card>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts">
+        <mat-card>
+            <h3>Sales vs Expenditure</h3>
+            <div class="chart-wrapper">
+                <canvas id="salesExpenditureChart"></canvas>
+            </div>
+        </mat-card>
+
+        <mat-card>
+            <h3>Profit Distribution</h3>
+            <div class="chart-wrapper">
+                <canvas id="profitPieChart"></canvas>
+            </div>
+        </mat-card>
+    </div>
+
+    <!-- Table -->
+    <mat-card>
+        <h3>Product-wise Details</h3>
+        <table class="report-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Sales Count</th>
+                    <th>Expenditure</th>
+                    <th>Sales</th>
+                    <th>Profit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let entry of report?.salesPerProduct | keyvalue">
+                    <td>{{ entry.key }}</td>
+                    <td>{{ report?.inferredSalesCountPerProduct[asString(entry.key)] }}</td>
+                    <td>{{ report?.expenditurePerProduct[asString(entry.key)] | currency:'INR':'symbol' }}</td>
+                    <td>{{ report?.salesPerProduct[asString(entry.key)] | currency:'INR':'symbol' }}</td>
+                    <td>{{ report?.profitPerProduct[asString(entry.key)] | currency:'INR':'symbol' }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </mat-card>
+
+    <div class="distribution-section">
+        <h2>Distribution Analysis</h2>
+    
+        <!-- Toggle buttons -->
+        <div class="toggle-buttons">
+            <button mat-button (click)="setDistribution('profit')"
+                [color]="activeDistribution==='profit'?'primary':''">Profit</button>
+            <button mat-button (click)="setDistribution('itemsSold')"
+                [color]="activeDistribution==='itemsSold'?'primary':''">Items Sold</button>
+            <button mat-button (click)="setDistribution('maxProfitItems')"
+                [color]="activeDistribution==='maxProfitItems'?'primary':''">Max Profitable</button>
+            <!-- <button mat-button (click)="setDistribution('leastProfitItems')"
+                [color]="activeDistribution==='leastProfitItems'?'primary':''">Least Profitable</button> -->
+            <button mat-button (click)="setDistribution('category')"
+                [color]="activeDistribution==='category'?'primary':''">Category</button>
+        </div>
+    
+        <!-- Chart -->
+        <div class="chart-wrapper">
+            <canvas id="distributionChart"></canvas>
+        </div>
+    </div>
+      
+</div>
+  

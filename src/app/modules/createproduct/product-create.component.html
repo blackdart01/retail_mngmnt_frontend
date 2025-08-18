@@ -1,0 +1,51 @@
+<div class="product-create-container">
+    <mat-card class="p-4">
+        <mat-card-title>Create Product</mat-card-title>
+
+        <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+            <!-- Name -->
+            <mat-form-field class="full-width">
+                <mat-label>Product Name</mat-label>
+                <input matInput formControlName="name" required>
+            </mat-form-field>
+
+            <!-- SKU -->
+            <mat-form-field class="full-width">
+                <mat-label>SKU</mat-label>
+                <input matInput formControlName="sku" required>
+            </mat-form-field>
+
+            <!-- Description -->
+            <mat-form-field class="full-width">
+                <mat-label>Description</mat-label>
+                <textarea matInput formControlName="description"></textarea>
+            </mat-form-field>
+
+            <!-- Low Stock Threshold -->
+            <mat-form-field class="full-width">
+                <mat-label>Low Stock Threshold</mat-label>
+                <input matInput type="number" formControlName="lowStockThreshold" required>
+            </mat-form-field>
+
+            <!-- Category -->
+            <div class="category-picker">
+                <mat-form-field class="full-width">
+                    <mat-label>Category</mat-label>
+                    <input matInput [value]="selectedCategory?.name || ''" readonly required>
+                </mat-form-field>
+                <button mat-raised-button type="button" (click)="openCategoryPicker()">
+                    Category
+                </button>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="actions">
+                <button mat-raised-button color="primary" type="submit"
+                    [disabled]="!productForm.valid || !selectedCategory">
+                    Create Product
+                </button>
+            </div>
+        </form>
+    </mat-card>
+</div>
+  

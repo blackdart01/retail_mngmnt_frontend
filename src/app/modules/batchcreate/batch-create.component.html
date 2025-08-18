@@ -1,0 +1,81 @@
+<h2>Create Product Batch</h2>
+
+<form (ngSubmit)="submitBatch()" class="form-container">
+
+    <!-- Product Picker -->
+    <button mat-raised-button color="accent" type="button" (click)="openProductPicker()">
+        {{ batch.product ? batch.product.name : 'Select Product' }}
+    </button>
+
+    <!-- Show Product Details -->
+    <div *ngIf="batch.product" class="info-card">
+        <h3>{{ batch.product.name }}</h3>
+        <p><strong>SKU:</strong> {{ batch.product.sku }}</p>
+        <p><strong>Category:</strong> {{ batch.product.category?.name }}</p>
+    </div>
+
+    <!-- Supplier Picker -->
+    <button mat-raised-button color="accent" type="button" (click)="openSupplierPicker()">
+        {{ batch.supplier ? batch.supplier.name : 'Select Supplier (Optional)' }}
+    </button>
+
+    <!-- Show Supplier Details -->
+    <div *ngIf="batch.supplier" class="info-card">
+        <h3>{{ batch.supplier.name }}</h3>
+        <p *ngIf="batch.supplier.contact"><strong>Contact:</strong> {{ batch.supplier.contact }}</p>
+    </div>
+
+    <br>
+
+    <!-- Cost Price -->
+    <mat-form-field class="full-width">
+        <mat-label>Cost Price</mat-label>
+        <input matInput type="number" [(ngModel)]="batch.costPrice" name="costPrice" required>
+    </mat-form-field>
+
+    <!-- Selling Price -->
+    <mat-form-field class="full-width">
+        <mat-label>Selling Price</mat-label>
+        <input matInput type="number" [(ngModel)]="batch.sellingPrice" name="sellingPrice" required>
+    </mat-form-field>
+
+    <!-- Backstore Quantity -->
+    <mat-form-field class="full-width">
+        <mat-label>Backstore Quantity</mat-label>
+        <input matInput type="number" [(ngModel)]="batch.backstoreQuantity" name="backstoreQuantity" required>
+    </mat-form-field>
+
+    <!-- Rack Quantity -->
+    <mat-form-field class="full-width">
+        <mat-label>Rack Quantity</mat-label>
+        <input matInput type="number" [(ngModel)]="batch.rackQuantity" name="rackQuantity">
+    </mat-form-field>
+
+    <!-- Location -->
+    <mat-form-field class="full-width">
+        <mat-label>Location</mat-label>
+        <input matInput [(ngModel)]="batch.location" name="location">
+    </mat-form-field>
+
+    <!-- Expiry Date -->
+    <mat-form-field class="full-width">
+        <mat-label>Expiry Date</mat-label>
+        <input matInput [matDatepicker]="expiryPicker" [(ngModel)]="batch.expiryDate" name="expiryDate">
+        <mat-datepicker-toggle matSuffix [for]="expiryPicker"></mat-datepicker-toggle>
+        <mat-datepicker #expiryPicker></mat-datepicker>
+    </mat-form-field>
+
+    <!-- Purchase Date -->
+    <mat-form-field class="full-width">
+        <mat-label>Purchase Date</mat-label>
+        <input matInput [matDatepicker]="purchasePicker" [(ngModel)]="batch.purchaseDate" name="purchaseDate">
+        <mat-datepicker-toggle matSuffix [for]="purchasePicker"></mat-datepicker-toggle>
+        <mat-datepicker #purchasePicker></mat-datepicker>
+    </mat-form-field>
+
+    <br>
+    <div class="action-row">
+        <button mat-raised-button color="primary" type="submit">Create Batch</button>
+        <button mat-stroked-button type="button" (click)="resetForm()">Reset</button>
+    </div>
+</form>
