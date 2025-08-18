@@ -1,0 +1,156 @@
+<div class="inventory-container">
+    <mat-card class="p-4">
+        <mat-card-title>Inventory</mat-card-title>
+
+        <!-- Action Buttons -->
+        <div class="actions">
+            <button mat-raised-button color="primary" (click)="loadAllProducts()">List All Products</button>
+            <button mat-raised-button color="primary" (click)="fetchLowStock(considerRackQuantity)">List Low
+                Stock</button>
+            <div *ngIf="lowStockProductFetched">
+                <mat-checkbox [(ngModel)]="considerRackQuantity" (change)="onRackQuantityToggle()">
+                    Consider Rack Quantity
+                </mat-checkbox>
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <!-- <mat-form-field appearance="outline" class="search-field">
+            <mat-label>Search</mat-label>
+            <input matInput (input)="filterProducts($event)" placeholder="Category, Name, SKU...">
+            <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field> -->
+        <mat-form-field style="margin-bottom: 10px;">
+            <mat-label>Search</mat-label>
+            <input matInput (input)="filterProducts($event)" placeholder="Type to search...">
+            <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+
+        <!-- Desktop Table View -->
+        <div class="table-container desktop-view">
+            <table mat-table [dataSource]="filteredProducts" class="mat-elevation-z8">
+                <ng-container matColumnDef="category">
+                    <th mat-header-cell *matHeaderCellDef>Category</th>
+                    <td mat-cell *matCellDef="let p">{{ p.category.name }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef>Name</th>
+                    <td mat-cell *matCellDef="let p">{{ p.name }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="sku">
+                    <th mat-header-cell *matHeaderCellDef>SKU</th>
+                    <td mat-cell *matCellDef="let p">{{ p.sku }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="stockQuantity">
+                    <th mat-header-cell *matHeaderCellDef>Stock Qty</th>
+                    <td mat-cell *matCellDef="let p">{{ p.stockQuantity || 0 }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="expand">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let p">
+                        <button mat-icon-button (click)="toggleExpand(p)">
+                            <mat-icon>{{ expandedProduct === p ? 'expand_less' : 'expand_more' }}</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+        <!-- </div> -->
+        <ng-container *ngFor="let product of filteredProducts">
+            <div [@expandCollapse]="isExpanded(product)" *ngIf="expandedProduct === product" class="p-2 bg-gray-50">
+                <strong>Batches for {{ product.name }}:</strong>
+                <table mat-table [dataSource]="product.batches" class="inner-table mat-elevation-z2">
+        
+                    <!-- <ng-container matColumnDef="batchId">
+                                <th mat-header-cell *matHeaderCellDef>Batch ID</th>
+                                <td mat-cell *matCellDef="let batch">{{ batch.id }}</td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="location">
+                                <th mat-header-cell *matHeaderCellDef>Location</th>
+                                <td mat-cell *matCellDef="let batch">{{ batch.location }}</td>
+                            </ng-container> -->
+        
+                    <ng-container matColumnDef="costPrice">
+                        <th mat-header-cell *matHeaderCellDef>Cost Price</th>
+                        <td mat-cell *matCellDef="let batch">{{ batch.costPrice?batch.costPrice:0.0 }}</td>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="sellingPrice">
+                        <th mat-header-cell *matHeaderCellDef>Selling Price</th>
+                        <td mat-cell *matCellDef="let batch">{{ batch.sellingPrice?batch.sellingPrice:0.0 }}</td>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="quantity">
+                        <th mat-header-cell *matHeaderCellDef>Quantity</th>
+                        <td mat-cell *matCellDef="let batch">{{ batch.quantity?batch.quantity:'0' }}</td>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="expiryDate">
+                        <th mat-header-cell *matHeaderCellDef>Expiry Dt</th>
+                        <td mat-cell *matCellDef="let batch">{{ batch.expiryDate?(batch.expiryDate| date:'dd MMM yy'):'-' }}
+                        </td>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="backstoreQuantity">
+                        <th mat-header-cell *matHeaderCellDef>Backstore Quantity</th>
+                        <td mat-cell *matCellDef="let batch">{{ batch.backstoreQuantity?batch.backstoreQuantity:0 }}</td>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="rackQuantity">
+                        <th mat-header-cell *matHeaderCellDef>Rack Quantity</th>
+                        <td mat-cell *matCellDef="let batch">{{ batch.rackQuantity?batch.rackQuantity:0 }}</td>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="purchaseDate">
+                        <th mat-header-cell *matHeaderCellDef>Purchase Dt</th>
+                        <td mat-cell *matCellDef="let batch">{{ batch.purchaseDate?(batch.purchaseDate| date:'dd MMM yy'):'-' }}
+                        </td>
+                    </ng-container>
+        
+                    <tr mat-header-row
+                        *matHeaderRowDef="['purchaseDate', 'costPrice','sellingPrice','expiryDate', 'backstoreQuantity', 'rackQuantity', 'quantity']">
+                    </tr>
+                    <tr mat-row
+                        *matRowDef="let row; columns: ['purchaseDate', 'costPrice','sellingPrice', 'expiryDate', 'backstoreQuantity', 'rackQuantity', 'quantity']">
+                    </tr>
+                </table>
+            </div>
+        </ng-container>
+    </div>
+        <!-- Mobile Card View -->
+        <div class="mobile-view">
+            <mat-card *ngFor="let p of filteredProducts" class="product-card p-3">
+                <mat-card-title>Product: {{ p.name }}</mat-card-title>
+                <hr/>
+                <mat-card-subtitle class="mb-2">Category: {{ p.category.name }}</mat-card-subtitle>
+                <mat-card-subtitle class="mb-2">SKU: {{ p.sku }}</mat-card-subtitle>
+                <p>Stock: {{ p.stockQuantity || 0 }}</p>
+                <hr class="h-[1px] bg-black"/>
+                <button mat-button color="accent" (click)="toggleExpand(p)" class="-mb-3">
+                    {{ expandedProduct === p ? 'Hide Batches' : 'View Batches' }}
+                </button>
+
+                <div *ngIf="expandedProduct === p" class="batch-list">
+                    <div *ngFor="let b of p.batches" class="batch-card">
+                        <p><strong>Purchase:</strong> {{ b.purchaseDate ? (b.purchaseDate | date:'dd MMM yy') : '-' }}
+                        </p>
+                        <p><strong>Cost:</strong> {{ b.costPrice || 0 }}</p>
+                        <p><strong>Selling:</strong> {{ b.sellingPrice || 0 }}</p>
+                        <p><strong>Rack Qty:</strong> {{ b.rackQuantity || 0 }}</p>
+                        <p><strong>Backstore Qty:</strong> {{ b.backstoreQuantity || 0 }}</p>
+                        <p><strong>Qty:</strong> {{ b.quantity || 0 }}</p>
+                    </div>
+                </div>
+            </mat-card>
+        </div>
+    </mat-card>
+</div>
+  

@@ -1,0 +1,22 @@
+.invoice-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+}
+
+.invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.invoice-table th,
+.invoice-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.button-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}

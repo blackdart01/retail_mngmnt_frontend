@@ -1,0 +1,176 @@
+<!-- <mat-card>
+    <h1>Sales List</h1>
+
+    <mat-table [dataSource]="sales" class="mat-elevation-z8">
+        <ng-container matColumnDef="invoice">
+            <mat-header-cell *matHeaderCellDef> Invoice # </mat-header-cell>
+            <mat-cell *matCellDef="let sale"> {{ sale.invoiceNumber }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+            <mat-header-cell *matHeaderCellDef> Sale Date </mat-header-cell>
+            <mat-cell *matCellDef="let sale"> {{ sale.saleDate | date:'dd MMM yy HH:mm' }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="total">
+            <mat-header-cell *matHeaderCellDef> Total Price </mat-header-cell>
+            <mat-cell *matCellDef="let sale"> {{ sale.totalPrice | currency:'INR':'symbol' }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="user">
+            <mat-header-cell *matHeaderCellDef> User </mat-header-cell>
+            <mat-cell *matCellDef="let sale"> {{ sale?.user?.username }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="expand">
+            <mat-header-cell *matHeaderCellDef>expand</mat-header-cell>
+            <mat-cell *matCellDef="let sale">
+                <button mat-icon-button (click)="toggleExpand(sale)">
+                    <mat-icon>{{ sale.expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+
+     <ng-container *ngFor="let sale of sales">
+    <div [@expandCollapse]="isExpanded(sale)" *ngIf="expandedProduct === sale" class="p-2 bg-gray-50">
+            <strong>Items for Invoice: {{ sale.invoiceNumber }}</strong>
+            <table mat-table [dataSource]="sale.items" class="mat-elevation-z1">
+                <ng-container matColumnDef="product">
+                    <mat-header-cell *matHeaderCellDef> Product </mat-header-cell>
+                    <mat-cell *matCellDef="let item">
+                        {{ item.product.name }} ({{ item.product.sku }})
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="category">
+                    <mat-header-cell *matHeaderCellDef> Category </mat-header-cell>
+                    <mat-cell *matCellDef="let item">
+                        {{ item.product.category.name }}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="price">
+                    <mat-header-cell *matHeaderCellDef> Price </mat-header-cell>
+                    <mat-cell *matCellDef="let item">
+                        {{ (item.unitPrice?item.unitPrice:item.product.batches[0].sellingPrice) | currency:'INR':'symbol' }}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="quantity">
+                    <mat-header-cell *matHeaderCellDef> Qty </mat-header-cell>
+                    <mat-cell *matCellDef="let item">
+                        {{ item.quantity }}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="subtotal">
+                    <mat-header-cell *matHeaderCellDef> Subtotal </mat-header-cell>
+                    <mat-cell *matCellDef="let item">
+                        {{ item.totalProductCost | currency:'INR':'symbol' }}
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="itemColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: itemColumns"></mat-row>
+            </table>
+    </div>
+</ng-container>
+</mat-card>
+   -->
+
+<mat-card>
+    <h1>Sales List</h1>
+
+    <mat-table [dataSource]="sales" class="mat-elevation-z8">
+        <ng-container matColumnDef="invoice">
+            <mat-header-cell *matHeaderCellDef> Invoice # </mat-header-cell>
+            <mat-cell *matCellDef="let sale"> {{ sale.invoiceNumber }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+            <mat-header-cell *matHeaderCellDef> Sale Date </mat-header-cell>
+            <mat-cell *matCellDef="let sale"> {{ sale.saleDate | date:'dd MMM yy HH:mm' }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="total">
+            <mat-header-cell *matHeaderCellDef> Total Price </mat-header-cell>
+            <mat-cell *matCellDef="let sale"> {{ sale.totalPrice | currency:'INR':'symbol' }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="user">
+            <mat-header-cell *matHeaderCellDef> User </mat-header-cell>
+            <mat-cell *matCellDef="let sale"> {{ sale?.user?.username }} </mat-cell>
+        </ng-container>
+
+        <!-- <ng-container matColumnDef="expand">
+            <mat-header-cell *matHeaderCellDef>Expand</mat-header-cell>
+            <mat-cell *matCellDef="let sale">
+                <button mat-icon-button (click)="toggleExpand(sale)">
+                    <mat-icon>{{ expandedProduct === sale ? 'expand_less' : 'expand_more' }}</mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container> -->
+
+        <ng-container matColumnDef="popup">
+            <mat-header-cell *matHeaderCellDef>Popup</mat-header-cell>
+            <mat-cell *matCellDef="let sale">
+                <button mat-icon-button color="primary" (click)="openSaleDetails(sale)">
+                    <mat-icon>visibility</mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+
+    <!-- Existing Inline Expansion (kept intact) -->
+    <ng-container *ngFor="let sale of sales">
+        <div [@expandCollapse]="isExpanded(sale)" *ngIf="expandedProduct === sale" class="p-2 bg-gray-50">
+            <strong>Items for Invoice: {{ sale.invoiceNumber }}</strong>
+            <table mat-table [dataSource]="sale.items" class="mat-elevation-z1">
+                <ng-container matColumnDef="product">
+                    <mat-header-cell *matHeaderCellDef> Product </mat-header-cell>
+                    <mat-cell *matCellDef="let item">
+                        {{ item.product.name }} ({{ item.product.sku }})
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="category">
+                    <mat-header-cell *matHeaderCellDef> Category </mat-header-cell>
+                    <mat-cell *matCellDef="let item">
+                        {{ item.product.category.name }}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="price">
+                    <mat-header-cell *matHeaderCellDef> Price </mat-header-cell>
+                    <mat-cell *matCellDef="let item">
+                        {{ (item.unitPrice?item.unitPrice:item.product.batches[0].sellingPrice) |
+                        currency:'INR':'symbol' }}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="quantity">
+                    <mat-header-cell *matHeaderCellDef> Qty </mat-header-cell>
+                    <mat-cell *matCellDef="let item"> {{ item.quantity }} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="subtotal">
+                    <mat-header-cell *matHeaderCellDef> Subtotal </mat-header-cell>
+                    <mat-cell *matCellDef="let item">
+                        {{ item.totalProductCost | currency:'INR':'symbol' }}
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="itemColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: itemColumns"></mat-row>
+            </table>
+        </div>
+    </ng-container>
+</mat-card>
+  
