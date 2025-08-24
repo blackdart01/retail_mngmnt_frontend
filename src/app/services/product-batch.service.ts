@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ProductBatchService {
-    // private baseUrl = 'https://retail-mngmnt-backend.onrender.com'
-    private baseUrl = 'http://localhost:8080';
+    private baseUrl = 'https://retail-mngmnt-backend.onrender.com'
+    // private baseUrl = 'http://localhost:8080';
     constructor(private http: HttpClient) { }
 
     getAll(): Observable<any[]> {
