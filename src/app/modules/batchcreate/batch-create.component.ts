@@ -38,7 +38,7 @@ export class BatchCreateComponent {
         rackQuantity: 0,
         location: 'BACKSTORE',
         expiryDate: '',
-        purchaseDate: '',
+        purchaseDate: new Date().toISOString(),
         supplierId: null as number | null,
         supplier: null as any
     };
@@ -87,7 +87,7 @@ export class BatchCreateComponent {
             backstoreQuantity: this.batch.backstoreQuantity,
             rackQuantity: this.batch.rackQuantity,
             location: this.batch.location,
-            expiryDate: this.batch.expiryDate ? new Date(this.batch.expiryDate).toISOString().split('T')[0] : null,
+            expiryDate: this.batch.expiryDate ? new Date(this.batch.expiryDate).toISOString() : null,
             purchaseDate: this.batch.purchaseDate ? new Date(this.batch.purchaseDate).toISOString() : new Date().toISOString(),
             supplierId: this.batch.supplierId
         };

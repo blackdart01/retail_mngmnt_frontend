@@ -10,6 +10,16 @@ import { CategoryPickerDialogComponent } from '../categorypickerdialog/category-
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ProductBatchService } from '../../services/product-batch.service';
+import { MatSelectModule } from '@angular/material/select';
+
+enum WeightUnit {
+    kg = 'KG',
+    gm = 'GM',
+    lt = 'LT',
+    ml = 'ML',
+    other = 'OTHER'
+}
+
 
 @Component({
     selector: 'app-product-create',
@@ -21,15 +31,17 @@ import { ProductBatchService } from '../../services/product-batch.service';
         MatFormFieldModule,
         MatInputModule,
         MatButtonModule,
-        MatCardModule
+        MatCardModule,
+        MatSelectModule
     ],
     templateUrl: './product-create.component.html',
     styleUrls: ['./product-create.component.css']
 })
+
 export class ProductCreateComponent {
     productForm: FormGroup;
     selectedCategory: any = null;
-
+    weightUnits = Object.values(WeightUnit);
     constructor(
         private fb: FormBuilder,
         private http: HttpClient,
@@ -39,10 +51,14 @@ export class ProductCreateComponent {
     ) {
         this.productForm = this.fb.group({
             name: ['', Validators.required],
-            sku: ['', Validators.required],
+            // sku: ['', Validators.required],
+            weight: ['', Validators.required],
+            weightUnits: ['', Validators.required],
             description: [''],
             lowStockThreshold: [0, Validators.required]
         });
+        // let sku = "";
+        // this.productForm.get('sku')?.setValue(sku);
     }
 
     openCategoryPicker() {

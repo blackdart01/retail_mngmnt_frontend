@@ -29,14 +29,14 @@ import { ProductBatchService } from '../../services/product-batch.service';
     templateUrl: './sale-entry.component.html'
 })
 export class SaleEntryComponent implements OnInit {
-    username = '';
+    username = localStorage.getItem('username') || '';
     items = [{
         productName: '',
         availableBatches: [],
         sku:'',
         productId: 0,
         originalProductId: 0,
-        batchNumber: '',
+        batchNumber: 0,
         quantity: 0,
         price: 0,
         totalPrice: 0
@@ -77,7 +77,7 @@ export class SaleEntryComponent implements OnInit {
             availableBatches: [],
             productId: 0,
             originalProductId: 0,
-            batchNumber: '',
+            batchNumber: 0,
             quantity: 0,
             price: 0,
             totalPrice: 0
@@ -96,7 +96,7 @@ export class SaleEntryComponent implements OnInit {
             availableBatches: [],
             productId: 0,
             originalProductId: 0,
-            batchNumber: '',
+            batchNumber: 0,
             quantity: 0,
             price: 0,
             totalPrice: 0
@@ -173,13 +173,16 @@ export class SaleEntryComponent implements OnInit {
         });
       }
     submitSale() {
-        const cleanedItems = this.items.filter(
+        let cleanedItems = this.items.filter(
             item => item.productId > 0 && item.quantity > 0 && item.price > 0
         );
         if (cleanedItems.length === 0) {
             alert('Please add at least one valid item.');
             return;
         }
+        cleanedItems.forEach(item => {
+            item.productId = item.batchNumber; // Use batchNumber as productId for sale
+        });
 
         const payload = {
             user: { username: this.username },
@@ -188,7 +191,7 @@ export class SaleEntryComponent implements OnInit {
         this.batchService.createSales(payload).subscribe({
             next: (res) => {
                 console.log('Sale created:', res);
-
+                localStorage.setItem('saleItems', '[]');
                 this.dialog.open(InvoiceDialogComponent, {
                     width: '700px',
                     data: {
@@ -206,13 +209,13 @@ export class SaleEntryComponent implements OnInit {
                             sku: '',
                             productId: 0,
                             originalProductId: 0,
-                            batchNumber: '',
+                            batchNumber: 0,
                             quantity: 0,
                             price: 0,
                             totalPrice: 0
                         }];
                         this.username = '';
-                        this.saveItemsToStorage();
+                        localStorage.setItem('saleItems', '[]');
                     }
                 });
             },
